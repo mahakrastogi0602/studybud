@@ -1,0 +1,8 @@
+{
+    "python.REPL.enableREPLSmartSend": false,
+    "python.languageServer": "Jedi",
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingImports": "none"
+    },
+    
+}
