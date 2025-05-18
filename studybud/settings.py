@@ -21,11 +21,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-c8+^%0v@t^&%1w)$5p&o@4w71ec(p866d)$10r9zeqgdzx3@gt'
-
+# SECRET_KEY = 'django-insecure-c8+^%0v@t^&%1w)$5p&o@4w71ec(p866d)$10r9zeqgdzx3@gt'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-c8+^%0v@t^&%1w)$5p&o@4w71ec(p866d)$10r9zeqgdzx3@gt')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
+CSRF_TRUSTED_ORIGINS = ['https://studybud-u9sw.onrender.com']  # Added for CSRF protection
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # Added for HTTPS
+ESSION_COOKIE_SECURE = True  # Added
+CSRF_COOKIE_SECURE = True  # Added
 ALLOWED_HOSTS = ['studybud-u9sw.onrender.com', 'localhost', '127.0.0.1']
 
 
@@ -93,7 +97,9 @@ WSGI_APPLICATION = 'studybud.wsgi.application'
 # }
 DATABASES = {
     'default': dj_database_url.config(
-        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3')
+        default='sqlite:///' + str(BASE_DIR / 'db.sqlite3'),
+        conn_max_age=600,
+        ssl_require=False 
     )
 }
 
@@ -136,7 +142,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-MEDIA_URL='/images/'
+MEDIA_URL='/static/images/'
 
 STATICFILES_DIRS = [
     BASE_DIR/ 'static'
@@ -154,3 +160,38 @@ import os
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WHITENOISE_MANIFEST_STRICT = False
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'django_error.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+    },
+}
+
+# Render-specific static files fix
+# Render-specific fixes (won't affect local development)
+if not DEBUG:
+    # 1. Make uploaded files use a different location
+    MEDIA_ROOT = BASE_DIR / 'render_uploads'  # New directory
+    
+    # 2. Ensure staticfiles contains both static AND media files
+    STATICFILES_DIRS = [ 
+        BASE_DIR / 'static',
+        BASE_DIR / 'render_uploads'
+    ]
