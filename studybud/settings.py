@@ -28,7 +28,7 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 CSRF_TRUSTED_ORIGINS = ['https://studybud-u9sw.onrender.com']  # Added for CSRF protection
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # Added for HTTPS
-ESSION_COOKIE_SECURE = True  # Added
+SESSION_COOKIE_SECURE = True  # Added
 CSRF_COOKIE_SECURE = True  # Added
 ALLOWED_HOSTS = ['studybud-u9sw.onrender.com', 'localhost', '127.0.0.1']
 
@@ -186,12 +186,19 @@ LOGGING = {
 
 # Render-specific static files fix
 # Render-specific fixes (won't affect local development)
-if not DEBUG:
-    # 1. Make uploaded files use a different location
-    MEDIA_ROOT = BASE_DIR / 'render_uploads'  # New directory
+# if not DEBUG:
+#     # 1. Make uploaded files use a different location
+#     MEDIA_ROOT = BASE_DIR / 'render_uploads'  # New directory
     
-    # 2. Ensure staticfiles contains both static AND media files
-    STATICFILES_DIRS = [ 
-        BASE_DIR / 'static',
-        BASE_DIR / 'render_uploads'
-    ]
+#     # 2. Ensure staticfiles contains both static AND media files
+#     STATICFILES_DIRS = [ 
+#         BASE_DIR / 'static',
+#         BASE_DIR / 'render_uploads'
+#     ]
+   # Render-specific fix (won't affect local development)
+if not DEBUG:
+    MEDIA_ROOT = BASE_DIR / 'staticfiles/profile_pics'  # Special location for uploads
+    MEDIA_URL = '/static/profile_pics/'  # New URL path
+    # Ensure directory exists
+    if not MEDIA_ROOT.exists():
+        MEDIA_ROOT.mkdir(parents=True)
