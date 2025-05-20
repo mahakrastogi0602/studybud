@@ -24,7 +24,7 @@
           <div class="profile__avatar">
             <div class="avatar avatar--large active">
             {% load static %}
-            <img src="{% static user.avatar %}" />
+            <img src="{{ user.avatar.url }}" />
             </div>
           </div>
           <div class="profile__info">

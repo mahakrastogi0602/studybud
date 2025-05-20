@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+from django.core.files.storage import DefaultStorage
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -186,19 +187,26 @@ LOGGING = {
 
 # Render-specific static files fix
 # Render-specific fixes (won't affect local development)
-# if not DEBUG:
-#     # 1. Make uploaded files use a different location
-#     MEDIA_ROOT = BASE_DIR / 'render_uploads'  # New directory
-    
-#     # 2. Ensure staticfiles contains both static AND media files
-#     STATICFILES_DIRS = [ 
-#         BASE_DIR / 'static',
-#         BASE_DIR / 'render_uploads'
-#     ]
-   # Render-specific fix (won't affect local development)
 if not DEBUG:
-    MEDIA_ROOT = BASE_DIR / 'staticfiles/profile_pics'  # Special location for uploads
-    MEDIA_URL = '/static/profile_pics/'  # New URL path
-    # Ensure directory exists
-    if not MEDIA_ROOT.exists():
-        MEDIA_ROOT.mkdir(parents=True)
+    # 1. Make uploaded files use a different location
+    MEDIA_ROOT = BASE_DIR / 'render_uploads'  # New directory
+    
+    # 2. Ensure staticfiles contains both static AND media files
+    STATICFILES_DIRS = [ 
+        BASE_DIR / 'static',
+        BASE_DIR / 'render_uploads'
+    ]
+   # Render-specific fix (won't affect local development)
+# if not DEBUG:
+#     MEDIA_ROOT = BASE_DIR / 'staticfiles/profile_pics'  # Special location for uploads
+#     MEDIA_URL = '/static/profile_pics/'  # New URL path
+#     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+#     # Ensure directory exists
+#     if not MEDIA_ROOT.exists():
+#         MEDIA_ROOT.mkdir(parents=True)  
+# if not DEBUG:
+#     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+#     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+#     AWS_STORAGE_BUCKET_NAME = 'studybud-profile-pics'
+#     AWS_S3_REGION_NAME = 'us-east-1'
