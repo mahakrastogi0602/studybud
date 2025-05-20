@@ -12,6 +12,15 @@
       <!-- Room List Start -->
       <div class="roomList">
         <div class="profile">
+          <!-- Add this warning DIV right here -->
+        {% if request.user == user %}
+        <div class="alert alert-warning" style="margin-bottom: 20px;">
+          <small>
+            ⚠️ Note: Profile pictures may reset after updates. 
+            We're working on permanent storage!
+          </small>
+        </div>
+        {% endif %}
           <div class="profile__avatar">
             <div class="avatar avatar--large active">
             {% load static %}
