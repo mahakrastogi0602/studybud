@@ -84,6 +84,9 @@ python manage.py runserver
 ![Room Conversation Preview](screenshot/home.png)
 
 
+## 🚀 Live Demo
 
+Check out the live version of the project here:  
+🔗 [StudyBud Live on Render](https://studybud-u9sw.onrender.com/)
 
 
