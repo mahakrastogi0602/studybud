@@ -73,6 +73,15 @@ python manage.py runserver
 > ⚠️ **Note:** Then, the development server will be started at: http://127.0.0.1:8000/
 
 
+## 🖼️ App Preview 
+
+### Feed Home PAge
+
+![Feed Home Page Screenshot](screenshot/feed.png)
+
+### Room Conversation Preview
+
+![Room Conversation Preview](screenshot/home.png)
 
 
 
